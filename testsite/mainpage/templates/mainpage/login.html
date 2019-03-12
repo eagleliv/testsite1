@@ -1,0 +1,36 @@
+{% load static %}
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+  <title>Login</title>
+</head>
+<body>
+  <form action="{% url 'loginpage' %}" method="post">
+  {% csrf_token %}
+  <div class="userinp1">
+  {% for field in form %}
+    {{ field }} <br>
+      {% if field.help_text %}
+        <small id="help" class="form-text text-muted">{{ field.help_text }}</small>
+      {% endif %}
+  {% endfor %}
+  {% if form.errors %}
+    {% for key, value in form.errors.items %}
+      <div class="alert alert-danger">{{ value }}</div>
+    {% endfor %}
+  {% endif %}
+  <br>
+  <div>
+    <button type="submit" class="btn btn-primary">Login</button>
+    <a href="{% url 'registerpage' %}" class="btn btn-primary">Register</a>
+    </div>
+  </div>
+
+</form>
+
+</body>
+</html>

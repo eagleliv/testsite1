@@ -1,0 +1,40 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+    <title></title>
+
+  </head>
+  <body>
+
+  <form action="{% url 'editperson' pk=person.id %}" enctype="multipart/form-data" method="post">
+  {% csrf_token %}
+      <div class="userinp1">
+    {% for item in form %}
+      <small class="form-text text-muted">{{item.help_text}}</small>
+      {{item}}
+      {% if item.errors %}
+        <div class="alert alert-danger" role="alert">
+          {{item.errors}}
+        </div>
+      {% endif %}
+    {% endfor %}
+    <!-- <select class="form-control mr-sm-2" name="" >
+      {% for sel in boss %}
+        <option value="{{sel.boss_name}}">{{sel.boss_name}}</option>
+      {% endfor %}
+    </select> -->
+    <div>
+      <br>
+    <button type="submit" class="btn btn-primary">Edit</button>
+    <a href="{% url 'employee' %}" class="btn btn-primary">Return to main page</a>
+    </div>
+  </div>
+  </form>
+
+
+  </body>
+</html>

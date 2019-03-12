@@ -1,0 +1,12 @@
+.userinp1 {
+  display: flex;
+  margin-left: 35%;
+  background-color: lightgrey;
+  width: 500px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}

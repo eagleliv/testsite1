@@ -1,0 +1,42 @@
+{% load static %}
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+  <title>Document</title>
+</head>
+<body>
+<form action="" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+<div class="userinp1">
+  {% for person in form_create_person %}
+    <small class="form-text text-muted">{{person.help_text}}</small>
+    {{person}}
+    {% if person.errors %}
+      <div class="alert alert-danger" role="alert">
+        {{person.errors}}
+      </div>
+    {% endif %}
+  {% endfor %}
+  {% for boss in form_create_boss %}
+    <small class="form-text text-muted">{{boss.help_text}}</small>
+    {{boss}}
+    {% if boss.errors %}
+      <div class="alert alert-danger" role="alert">
+        {{boss.errors}}
+      </div>
+    {% endif %}
+  {% endfor %}
+  <br>
+<div>
+<button type="submit" class="btn btn-primary">Add</button>
+<a href="{% url 'employee' %}" class="btn btn-primary">Return to main page</a>
+</div>
+</div>
+
+</form>
+</body>
+</html>

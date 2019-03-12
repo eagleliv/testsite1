@@ -1,0 +1,101 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+  <title></title>
+</head>
+<body>
+  <nav class="navbar navbar-light bg-light">
+    {% if user.is_authenticated %}
+    <form class="form-inline" name="search" method="post" action="/search/">
+      {% csrf_token %}
+      <input class="form-control mr-sm-2" type="search" placeholder="Search by Surname" name="bysurname" aria-label="Search">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search by Position" name="byposition" aria-label="Search">
+      <input class="form-control mr-sm-2" type="date" placeholder="by Date of Employement" name="bydateofemployement" aria-label="Search">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search by Salary" name="bysalary" aria-label="Search">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search by Boss name" name="bybossname" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="search">Search</button>
+      <button class="btn btn-outline-success my-2 my-sm-0" type="text" id="clear">Clear all</button>
+    </form>
+
+    <form class="form-inline" name="sort" action="." method="post">
+      {% csrf_token %}
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit" id="sort">Sort by</button>
+      <div class="form-group">
+        <select class="form-control" name="select">
+          <option>Boss name</option>
+          <option>Surname</option>
+          <option>Position</option>
+          <option>Date</option>
+          <option>Salary</option>
+        </select>
+      </div>
+    </form>
+
+    <a href="{% url 'createperson' %}" class="btn btn-outline-success my-2 my-sm-0">Add employee</a>
+
+    {% endif %}
+    <div>
+    {{ request.user.username }}
+    <a href="{% url 'pass_logout' %}" class="btn btn-primary">Logout</a>
+    </div>
+  </nav>
+  <ul class="list-group">
+    {% for key, value in person_data.items %}
+    <li class="list-group-item list-group-item-primary">Boss name: {{key.boss_name}} <br>Boss position: {{key.boss_position}}</li>
+    <ul>
+      {% if value %}
+      {% for item in value %}
+      <a href="{% url 'person' pk=item.id %}" <div><li class="list-group-item list-group-item-success">
+        {% if item.employee_image %}
+          <img style="height: 100px;" src="{% static item.employee_image.url %}">
+        {% endif %}
+        Employee name {{item.surname}} {{item.name}} {{item.patronimyc}}</li></a></div>
+      <li class="list-group-item">Position: {{item.position}}</li>
+      <li class="list-group-item">Date of Employee: {{item.employee_date}}</li>
+      <li class="list-group-item">Salary: {{item.salary}}</li>
+      {% endfor %}
+      {% endif %}
+    </ul> <br>
+    {% endfor %}
+  </ul>
+
+  <script type="text/javascript">
+  var bysurname = document.querySelector('input[name=bysurname]');
+  var byposition = document.querySelector('input[name=byposition]');
+  var bydateofemployement = document.querySelector('input[name=bydateofemployement]');
+  var bysalary = document.querySelector('input[name=bysalary]');
+  var bybossname = document.querySelector('input[name=bybossname]');
+  var search = document.querySelector('#search');
+  var clear = document.querySelector('#clear');
+
+  clear.onclick = function(e) {
+    bysurname.value = '';
+    byposition.value = '';
+    bydateofemployement.value = '';
+    bysalary.value = '';
+    bybossname.value = '';
+    e.preventDefault();
+  }
+
+  search.onclick = function(e) {
+    if (!bysurname.value.trim() && !byposition.value.trim() && !bydateofemployement.value.trim() && !bysalary.value.trim() && !bybossname.value.trim()){
+      alert('Must be enter one of field');
+      bysurname.value = '';
+      byposition.value = '';
+      bydateofemployement.value = '';
+      bysalary.value = '';
+      bybossname.value = '';
+      e.preventDefault();
+    };
+    if (bysalary.value.trim() % 1 != 0) {
+      alert('Field by Salary must be integer');
+      bysalary.value = '';
+      e.preventDefault();
+    };
+  };
+</script>
+</body>
+</html>

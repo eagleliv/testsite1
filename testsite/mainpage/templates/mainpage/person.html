@@ -1,0 +1,40 @@
+{% load static %}
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" href="{% static 'bootstrap.min.css' %}">
+  <title>Document</title>
+</head>
+<body>
+  {% if person %}
+
+  <ul class="list-group">
+  <li class="list-group-item list-group-item-primary">Boss name: {{person.first.boss.boss_name}} <br> Boss position: {{person.first.boss.boss_position}}</li>
+  {% for item in person %}
+  <ul>
+    <li class="list-group-item list-group-item-success"> Employee name <br>
+    {{item.name}} {{item.surname}} {{item.patronimyc}}</li>
+      <li class="list-group-item">Employee position <br>{{item.position}}</li>
+      <li class="list-group-item">Date of employment <br> {{item.employee_date}}</li>
+      <li class="list-group-item">Salary <br> {{item.salary}}</li>
+      {% if item.employee_image %}
+      <li class="list-group-item"><img src="{% static item.employee_image.url %}"></li>
+      {% endif %}
+      <form action="." method="post">{% csrf_token %}
+      <li class="list-group-item"><a href="{% url 'editperson' pk=item.id %}" class="btn btn-primary">Edit</a>  <button type="submit" class="btn btn-primary">Delete</button></li>
+      </form>
+  </ul>
+  {% endfor %}
+    <li class="list-group-item"><a class="btn btn-primary" href="{% url 'employee' %}" class="btn btn-primary">Return to main page</a></li>
+{% else %}
+
+  <div class="alert alert-warning"><h3> Nothing found </h3> <br>
+    <a href="{% url 'employee' %}" class="btn btn-primary">Return to main page</a>
+  </div>
+  {% endif %}
+</ul>
+
+</body>
+</html>
